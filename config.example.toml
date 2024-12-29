@@ -1,0 +1,48 @@
+repository = "/data"
+password_file = "/password.txt"
+dry_run = true
+
+[repository_options]
+random_opt = "string"
+
+[docker]
+tag_volume_names = true
+
+# Don't warn about volumes with a generated name
+[[docker.skip_volumes]]
+regex = "^[a-z0-9]{64}$"
+[[docker.skip_volumes]]
+name = "data"
+
+[[directories]]
+basedir = "/mnt/data/foundry/primary-instance"
+paths = [
+    "Data/worlds",
+    "Config"
+]
+tags = ["foundry", "foundry-primary"]
+pre_commands = [ ["/usr/bin/systemctl", "stop", "foundryvtt-primary.service"] ]
+post_commands = [ ["/usr/bin/systemctl", "start", "foundryvtt-primary.service"] ]
+
+[[directories]]
+basedir = "/root/ha-backup"
+tags = ["home-assistant-config"]
+pre_commands = [ ["/root/ha-backups-init.sh"] ]
+post_commands = [ ["/root/ha-backups-teardown.sh"] ]
+
+[[volumes]]
+name = "anki-data"
+container = "anki"
+stop_container = true
+
+[[volumes]]
+name = "caddy_config"
+container = "caddy-bridge"
+stop_container = false
+
+[[volumes]]
+name = "postgres-data"
+container = "postgres"
+stop_container = false
+command = ["/bin/bash", "-c", "cat $POSTGRES_PASSWORD_FILE | pg_dumpall --clean -h localhost -U postgres > /var/lib/postgresql/data/rustic-backup.sql"]
+output_file = "rustic-backup.sql"

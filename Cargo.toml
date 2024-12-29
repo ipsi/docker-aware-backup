@@ -1,0 +1,40 @@
+[package]
+name = "backup-rs"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rustic_core = "0.7"
+rustic_backend = "0.5"
+
+docker-api = "0.14.0"
+#containers-api = "0.9"
+
+tokio = {version = "1.33", features = ["full"]}
+tokio-stream = "0.1"
+#async-trait = "0.1"
+#futures-util = "0.3"
+
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["json", "env-filter"] }
+
+serde = { version = "1.0", features = ["derive"] }
+#serde_json = { version = "1.0" }
+#serde_with = { version = "3.4", features = ["json"] }
+
+clap = { version = "4.4", features = ["derive", "env", "unicode", "wrap_help"] }
+
+toml = "0.8"
+
+#local-ip-address = "0.6"
+
+homedir = "0.3"
+
+anyhow = "1.0"
+
+walkdir = "2.5.0"
+
+regex = "1.11"
+serde_regex = "1.1"
